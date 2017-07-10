@@ -1,8 +1,36 @@
-import { StackNavigator } from "react-navigation";
+import React, { Component } from "react";
+import { Icon } from "react-native-elements";
+import { StackNavigator, DrawerNavigator } from "react-navigation";
 
-import Home from "./components/Home";
+import Profile from "./components/Profile";
+import Timeline from "./components/Timeline";
 import Login from "./components/Login";
 import Single from "./components/Single";
+
+const InnerNavigator = DrawerNavigator(
+  {
+    Profile: {
+      path: "/",
+      screen: Profile,
+      navigationOptions: {
+        title: "Profile"
+      }
+    },
+    Timeline: {
+      path: "/timeline",
+      screen: Timeline,
+      navigationOptions: {
+        title: "Timeline"
+      }
+    }
+  },
+  {
+    initialRouteName: "Profile",
+    contentOptions: {
+      activeTintColor: "#e91e63"
+    }
+  }
+);
 
 const routeConfigs = {
   Login: {
@@ -12,9 +40,18 @@ const routeConfigs = {
     }
   },
   Home: {
-    screen: Home,
-    navigationOptions: {
-      header: null
+    screen: InnerNavigator,
+    navigationOptions: ({ navigation }) => {
+      console.log(navigation);
+      return {
+        headerLeft: (
+          <Icon
+            type="font-awesome"
+            name="bars"
+            onPress={() => navigation.navigate("DrawerOpen")}
+          />
+        )
+      };
     }
   },
   Single: {
